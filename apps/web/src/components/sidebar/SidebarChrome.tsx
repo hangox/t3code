@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import { ArrowLeftIcon, ArrowRightIcon, ChartNoAxesColumnIcon, SettingsIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { memo } from "react";
@@ -129,9 +130,10 @@ function HistoryNavigationButton({
   direction: HistoryDirection;
   onBackdrop: boolean;
 }) {
+  const gt = useGT();
   const keybindings = useAtomValue(primaryServerKeybindingsAtom);
   const enabled = useCanNavigateHistory(direction);
-  const label = direction === "back" ? "Go back" : "Go forward";
+  const label = direction === "back" ? gt("Go back") : gt("Go forward");
   const shortcutLabel = shortcutLabelForCommand(
     keybindings,
     direction === "back" ? "navigation.back" : "navigation.forward",
@@ -221,6 +223,7 @@ function SidebarUtilityItem({
 }
 
 const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
+  const gt = useGT();
   const navigate = useNavigate();
   const navigateToMainApp = useNavigateToMainApp();
   const { isMobile, setOpenMobile } = useSidebar();
@@ -268,33 +271,33 @@ const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
         <SidebarMenuItem className="min-w-0 flex-1">
           <SidebarMenuButton onClick={handleBackClick}>
             <ArrowLeftIcon />
-            <span>Back</span>
+            <span>{gt("Back")}</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       ) : (
         <>
           <SidebarUtilityItem
             icon={<SettingsIcon />}
-            label="Settings"
+            label={gt("Settings")}
             onClick={handleSettingsClick}
           />
           {pullRequestsSupported ? (
             <SidebarUtilityItem
               icon={<PullRequestGlyph.pullRequest />}
-              label="Pull requests"
+              label={gt("Pull requests")}
               onClick={handlePullRequestsClick}
             />
           ) : null}
           {issuesSupported ? (
             <SidebarUtilityItem
               icon={<IssueGlyph.issue />}
-              label="Issues"
+              label={gt("Issues")}
               onClick={handleIssuesClick}
             />
           ) : null}
           <SidebarUtilityItem
             icon={<ChartNoAxesColumnIcon />}
-            label="Usage"
+            label={gt("Usage")}
             onClick={handleUsageClick}
           />
         </>

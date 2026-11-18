@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import { ThreadDetailsControl } from "./chat/ThreadDetailsControl";
 import { useAtomMount, useAtomValue } from "@effect/atom-react";
 import {
@@ -924,6 +925,7 @@ export default function GitActionsControl({
   onOpenChanges,
   workspaceMutationId = null,
 }: GitActionsControlProps) {
+  const gt = useGT();
   const progressLabelId = useId();
   const panelAnchorRef = useRef<HTMLDivElement | null>(null);
   const updateThreadMetadata = useAtomCommand(
@@ -1536,7 +1538,7 @@ export default function GitActionsControl({
           }}
         >
           <CloudUploadIcon />
-          <MenuItemLabel>Publish repository...</MenuItemLabel>
+          <MenuItemLabel>{gt("Publish repository...")}</MenuItemLabel>
         </MenuItem>
       ) : null}
       {isDetachedHead && (
@@ -1567,7 +1569,7 @@ export default function GitActionsControl({
         >
           <GitBranchPlusIcon className="size-3.5" aria-hidden />
           <span className={cn("ml-0.5", THREAD_DETAILS_PANEL_LABEL_CLASS)}>
-            {initAction.isPending ? "Initializing..." : "Initialize Git"}
+            {initAction.isPending ? gt("Initializing...") : gt("Initialize Git")}
           </span>
         </ThreadDetailsControl>
       ) : quietEmptyDraft || (compact && !gitActionProgress && !visibleInlineSuccess) ? null : (
@@ -1696,7 +1698,7 @@ export default function GitActionsControl({
                       className={THREAD_DETAILS_PANEL_CHEVRON_CLASS}
                     />
                   </TooltipTrigger>
-                  <TooltipPopup side="top">Git action options</TooltipPopup>
+                  <TooltipPopup side="top">{gt("Git action options")}</TooltipPopup>
                 </Tooltip>
                 <MenuPopup align="end" anchor={panelAnchorRef} className="w-(--anchor-width)">
                   {gitItems}
@@ -1723,7 +1725,7 @@ export default function GitActionsControl({
           >
             <FileDiffIcon className={THREAD_DETAILS_PANEL_ICON_CLASS} aria-hidden />
             <span className="flex min-w-0 flex-1 items-baseline gap-1.5">
-              <span className="shrink-0">Changes</span>
+              <span className="shrink-0">{gt("Changes")}</span>
               {changesBaseLabel ? (
                 <Tooltip>
                   <TooltipTrigger

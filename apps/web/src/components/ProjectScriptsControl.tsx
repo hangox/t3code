@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import { ThreadDetailsControl } from "./chat/ThreadDetailsControl";
 import {
   AuthSettingsWriteScope,
@@ -88,6 +89,7 @@ export default function ProjectScriptsControl({
   onUpdateScript,
   onDeleteScript,
 }: ProjectScriptsControlProps) {
+  const gt = useGT();
   const isPanel = displayMode === "panel";
   const ActionGroup = isPanel ? "div" : Group;
   const panelAnchorRef = React.useRef<HTMLDivElement | null>(null);
@@ -230,7 +232,7 @@ export default function ProjectScriptsControl({
       {importMenuItems}
       <MenuItem density={presentation === "menu" ? "touch" : "default"} onClick={openAddDialog}>
         <PlusIcon className="size-4" />
-        <MenuItemLabel>{isPanel ? "Add project script" : "Add action"}</MenuItemLabel>
+        <MenuItemLabel>{isPanel ? gt("Add project script") : gt("Add action")}</MenuItemLabel>
       </MenuItem>
     </>
   );
@@ -379,7 +381,7 @@ export default function ProjectScriptsControl({
             >
               <WrenchIcon className={THREAD_DETAILS_PANEL_ICON_CLASS} />
               <span className={cn("min-w-0 truncate", THREAD_DETAILS_PANEL_LABEL_CLASS)}>
-                Actions
+                {gt("Actions")}
               </span>
             </ThreadDetailsControl>
             <span aria-hidden="true" className={THREAD_DETAILS_PANEL_SPLIT_SEPARATOR_CLASS} />
@@ -437,7 +439,7 @@ export default function ProjectScriptsControl({
                 part="row"
                 panel={isPanel}
                 className={isPanel ? undefined : "w-7 sm:w-6 @3xl/header-actions:w-auto!"}
-                aria-label={isPanel ? "Add project script" : "Add action"}
+                aria-label={isPanel ? gt("Add project script") : gt("Add action")}
                 data-toolbar-control=""
                 onClick={openAddDialog}
               />
@@ -450,10 +452,10 @@ export default function ProjectScriptsControl({
                 isPanel && cn("not-sr-only ml-0.5", THREAD_DETAILS_PANEL_LABEL_CLASS),
               )}
             >
-              {isPanel ? "Add project script" : "Add action"}
+              {isPanel ? gt("Add project script") : gt("Add action")}
             </span>
           </TooltipTrigger>
-          <TooltipPopup side="top">{isPanel ? "Add project script" : "Add action"}</TooltipPopup>
+          <TooltipPopup side="top">{isPanel ? gt("Add project script") : gt("Add action")}</TooltipPopup>
         </Tooltip>
       )}
 

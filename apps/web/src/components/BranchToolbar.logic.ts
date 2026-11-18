@@ -1,3 +1,4 @@
+import { msg } from "gt-react";
 import type {
   EnvironmentId,
   EnvironmentMachineKind,
@@ -92,7 +93,7 @@ export function resolveContextStripLabelsCompact(input: {
 }
 
 export function resolveEnvModeLabel(mode: EnvMode): string {
-  return mode === "worktree" ? "New worktree" : "Current checkout";
+  return mode === "worktree" ? msg("New worktree") : msg("Current checkout");
 }
 
 export const WORKTREE_SUBMODULES_LABELS: Record<WorktreeSubmodules, string> = {
@@ -102,7 +103,7 @@ export const WORKTREE_SUBMODULES_LABELS: Record<WorktreeSubmodules, string> = {
 };
 
 export function resolveCurrentWorkspaceLabel(activeWorktreePath: string | null): string {
-  return activeWorktreePath ? "Current worktree" : resolveEnvModeLabel("local");
+  return activeWorktreePath ? msg("Current worktree") : resolveEnvModeLabel("local");
 }
 
 export function resolveLockedWorkspaceLabel(
@@ -110,7 +111,7 @@ export function resolveLockedWorkspaceLabel(
   effectiveEnvMode: EnvMode,
 ): string {
   if (activeWorktreePath) return activeWorktreePath.split(/[\\/]/).findLast(Boolean) ?? "Worktree";
-  return effectiveEnvMode === "worktree" ? resolveEnvModeLabel("worktree") : "Local checkout";
+  return effectiveEnvMode === "worktree" ? resolveEnvModeLabel("worktree") : msg("Local checkout");
 }
 
 export interface PreviousWorktreeSeed {

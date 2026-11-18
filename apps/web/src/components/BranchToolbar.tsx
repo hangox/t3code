@@ -1,3 +1,4 @@
+import { useGT, useMessages } from "gt-react";
 import { writeTextToClipboard } from "../hooks/useCopyToClipboard";
 import { formatFilePathForClipboard } from "@t3tools/client-runtime/media-actions";
 import { readLocalApi } from "../localApi";
@@ -176,6 +177,8 @@ const RunContextSelector = memo(function RunContextSelector({
   addTargets,
   onAddToMachine,
 }: RunContextSelectorProps) {
+  const gt = useGT();
+  const m = useMessages();
   const composerFloatingLayerProps = useComposerMenuProps();
   const activeEnvironment =
     availableEnvironments?.find((env) => env.environmentId === environmentId) ?? null;
@@ -185,13 +188,13 @@ const RunContextSelector = memo(function RunContextSelector({
       : activeWorktreePath
         ? FolderGitIcon
         : FolderIcon;
-  const workspaceLabel = forceNewWorktree
+  const workspaceLabel = m(forceNewWorktree
     ? resolveEnvModeLabel("worktree")
     : envModeLocked
       ? resolveLockedWorkspaceLabel(activeWorktreePath, effectiveEnvMode)
       : effectiveEnvMode === "worktree"
         ? resolveEnvModeLabel("worktree")
-        : resolveCurrentWorkspaceLabel(activeWorktreePath);
+        : resolveCurrentWorkspaceLabel(activeWorktreePath));
   const isPanel = displayMode === "panel";
   const isLocked = envLocked || (envModeLocked && (!isPanel || !showEnvironmentPicker));
   const workspacePath =
@@ -314,7 +317,7 @@ const RunContextSelector = memo(function RunContextSelector({
         ((showEnvironmentPicker && onEnvironmentChange) || addTargets.length > 0) ? (
           <>
             <MenuGroup>
-              <MenuGroupLabel>Run on</MenuGroupLabel>
+              <MenuGroupLabel>{gt("Run on")}</MenuGroupLabel>
               <MenuRadioGroup
                 value={autoEnvironmentLabel ? "auto" : environmentId}
                 onValueChange={(value) =>
@@ -384,7 +387,7 @@ const RunContextSelector = memo(function RunContextSelector({
           </>
         ) : null}
         <MenuGroup>
-          <MenuGroupLabel>Workspace</MenuGroupLabel>
+          <MenuGroupLabel>{gt("Workspace")}</MenuGroupLabel>
           <MenuRadioGroup
             value={effectiveEnvMode}
             onValueChange={(value) => {
@@ -402,13 +405,13 @@ const RunContextSelector = memo(function RunContextSelector({
                 ) : (
                   <FolderIcon className="size-3" />
                 )}
-                <MiddleTruncate value={resolveCurrentWorkspaceLabel(activeWorktreePath)} />
+                <MiddleTruncate value={m(resolveCurrentWorkspaceLabel(activeWorktreePath))} />
               </span>
             </MenuRadioItem>
             <MenuRadioItem disabled={envModeLocked} value="worktree" closeOnClick>
               <span className="flex min-w-0 items-center gap-1.5">
                 <FolderGit2Icon className="size-3" />
-                <span className="min-w-0 truncate">{resolveEnvModeLabel("worktree")}</span>
+                <span className="min-w-0 truncate">{m(resolveEnvModeLabel("worktree"))}</span>
               </span>
             </MenuRadioItem>
             {previousWorktreeLabel ? (

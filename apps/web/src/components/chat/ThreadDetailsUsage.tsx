@@ -12,6 +12,7 @@ import {
   paceOf,
   remainingPercent,
 } from "@t3tools/shared/usageLimits";
+import { msg, useGT, useMessages } from "gt-react";
 import type { ReactNode } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";
@@ -25,9 +26,9 @@ import { formatContextWindowCompactionMessage } from "./compaction.logic";
 import { ThreadDetailsSection } from "./ThreadDetailsSection";
 
 const PACE_LABEL: Record<LimitPace, string> = {
-  ahead: "Ahead of pace",
-  on: "On pace",
-  under: "Under pace",
+  ahead: msg("Ahead of pace"),
+  on: msg("On pace"),
+  under: msg("Under pace"),
 };
 
 export interface ThreadDetailsUsageInput {
@@ -45,6 +46,7 @@ export function ThreadDetailsUsage({
   providers,
   sources,
 }: Omit<ThreadDetailsUsageInput, "contextWindow">) {
+  const gt = useGT();
   const nowMinute = useNowMinute();
   const now = Date.parse(`${nowMinute}:00Z`);
   const report =
@@ -68,10 +70,10 @@ export function ThreadDetailsUsage({
       <div className="grid grid-cols-[auto_minmax(3rem,1fr)_auto] gap-x-3 text-xs">
         {notice ? (
           <UsageRow
-            label="Limits"
+            label={gt("Limits")}
             fill={null}
             tone={null}
-            value="Unavailable"
+            value={gt("Unavailable")}
             tooltip={<span className="text-foreground">{notice}</span>}
           />
         ) : (
@@ -84,6 +86,7 @@ export function ThreadDetailsUsage({
 
 /** The thread's context window. The bar fills as context is used; the tick marks auto-compaction. */
 export function ThreadDetailsContext({ usage }: { readonly usage: ContextWindowSnapshot }) {
+  const gt = useGT();
   const maxTokens = usage.maxTokens != null && usage.maxTokens > 0 ? usage.maxTokens : null;
   const used =
     maxTokens !== null && usage.usedPercentage !== null
@@ -103,7 +106,7 @@ export function ThreadDetailsContext({ usage }: { readonly usage: ContextWindowS
     >
       <div className="grid grid-cols-[auto_minmax(3rem,1fr)_auto] gap-x-3 text-xs">
         <UsageRow
-          label="Context"
+          label={gt("Context")}
           fill={used}
           tone={used === null ? null : used >= 90 ? "error" : used >= 80 ? "warning" : null}
           tick={tick}
@@ -145,6 +148,7 @@ function LimitRow({
   readonly window: ServerProviderUsageWindow;
   readonly now: number;
 }) {
+  const m = useMessages();
   const timestampFormat = usePrimarySettings((settings) => settings.timestampFormat);
   const left = remainingPercent(window);
   const pace = paceOf(window, now);
@@ -167,7 +171,7 @@ function LimitRow({
               {formatUpcomingTimestamp(window.resetsAt, timestampFormat, now)}
             </span>
           ) : null}
-          {pace ? <span className="text-muted-foreground">{PACE_LABEL[pace]}</span> : null}
+          {pace ? <span className="text-muted-foreground">{m(PACE_LABEL[pace])}</span> : null}
         </>
       }
     />

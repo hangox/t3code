@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import { useLegendListRef } from "~/hooks/useLegendListRef";
 import {
   ANTIGRAVITY_DEFAULT_MODEL,
@@ -365,6 +366,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
   const modelListRef = useRef<LegendListRef | null>(null);
   const pickerContentRef = useRef<HTMLDivElement>(null);
   // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- publishes this picker's mount to global keydown handlers
+  const gt = useGT();
   useLayoutEffect(() => registerModelPickerContent(), []);
   const highlightedModelKeyRef = useRef<string | null>(null);
   const { favorites } = useEnvironmentModelPreferences(props.environmentId);
@@ -930,7 +932,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
           >
             <ComboboxSearchInput
               ref={searchInputRef}
-              placeholder="Search models..."
+              placeholder={gt("Search models...")}
               value={searchQuery}
               onChange={(e) => {
                 if (!isSearching) setSearchHeight(pickerContentRef.current?.offsetHeight ?? 0);
@@ -1031,7 +1033,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
                       className="group w-full cursor-pointer"
                     >
                       <span className="text-sm leading-snug text-muted-foreground group-hover:text-foreground group-data-highlighted:text-foreground">
-                        {legacySection.isExpanded ? "Show less" : "Show more"}
+                        {legacySection.isExpanded ? gt("Show less") : gt("Show more")}
                       </span>
                     </ComboboxItem>
                   );
@@ -1077,10 +1079,10 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
               updateRequiredNotices={updateRequiredNotices}
               emptyLabel={
                 selectedInstanceId === "favorites" && !isSearching
-                  ? "No favorites yet"
+                  ? gt("No favorites yet")
                   : workspaceModelsScanning
-                    ? "Searching project models..."
-                    : "No models found"
+                    ? gt("Searching project models...")
+                    : gt("No models found")
               }
               onRequestClose={onRequestClose}
               onOpenProviderSetup={onOpenProviderSetup}

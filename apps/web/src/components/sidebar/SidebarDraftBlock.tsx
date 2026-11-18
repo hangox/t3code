@@ -3,6 +3,7 @@ import type { ContextMenuSource } from "@t3tools/contracts";
 import { contextMenuSourceOf } from "../../contextMenuSource";
 import { assistantCitationsToPlainText } from "@t3tools/shared/assistantCitations";
 import { replaceComposerContextReferences } from "@t3tools/shared/composerContextReferences";
+import { T } from "gt-react";
 import { SquarePenIcon, XIcon } from "lucide-react";
 import {
   memo,
@@ -128,7 +129,7 @@ const SidebarDraftRow = memo(function SidebarDraftRow(props: {
                     </button>
                   }
                 />
-                <TooltipPopup side="top">Discard draft</TooltipPopup>
+                <TooltipPopup side="top"><T>Discard draft</T></TooltipPopup>
               </Tooltip>
             </span>
           </div>

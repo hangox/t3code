@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import { ThreadDetailsControl } from "./ThreadDetailsControl";
 import {
   AuthOrchestrationOperateScope,
@@ -227,6 +228,7 @@ export const OpenInPicker = memo(function OpenInPicker({
   displayMode?: "toolbar" | "panel";
   revealFileManager?: boolean;
 }) {
+  const gt = useGT();
   const isPanel = displayMode === "panel";
   const ActionGroup = isPanel ? "div" : Group;
   const panelAnchorRef = useRef<HTMLDivElement | null>(null);
@@ -285,7 +287,7 @@ export const OpenInPicker = memo(function OpenInPicker({
   const backgroundThread = use(BackgroundThreadContext);
   const options = resolveOpenInOptions(navigator.platform, effectiveEditors);
   const primaryOption = options.find(({ value }) => value === preferredEditor) ?? null;
-  const primaryLabel = isPanel ? `Open in ${primaryOption?.label ?? "editor"}` : "Open";
+  const primaryLabel = isPanel ? `${gt("Open in")} ${primaryOption?.label ?? gt("editor")}` : gt("Open");
 
   const unavailableReason =
     remote.mode === "remote-unavailable"
@@ -304,7 +306,7 @@ export const OpenInPicker = memo(function OpenInPicker({
         <>
           {options.length === 0 && (
             <MenuItem density={presentation === "menu" ? "touch" : "default"} disabled>
-              No installed editors found
+              {gt("No installed editors found")}
             </MenuItem>
           )}
           {options.map(({ label, Icon, value, kind }) => (
@@ -347,7 +349,7 @@ export const OpenInPicker = memo(function OpenInPicker({
             onClick={() => openInEditor(preferredEditor)}
           >
             <primaryOption.Icon className={cn("size-4", getOpenInIconClass(primaryOption.kind))} />
-            <MenuItemLabel>Open in {primaryOption.label}</MenuItemLabel>
+            <MenuItemLabel>{gt("Open in")} {primaryOption.label}</MenuItemLabel>
             {openFavoriteEditorShortcutLabel && (
               <MenuShortcut>{openFavoriteEditorShortcutLabel}</MenuShortcut>
             )}
@@ -356,7 +358,7 @@ export const OpenInPicker = memo(function OpenInPicker({
         <MenuSub>
           <MenuSubTrigger density="touch" disabled={isHostEditorDenied}>
             <SquareArrowOutUpRightIcon className="size-4" />
-            <MenuItemLabel>Open in…</MenuItemLabel>
+            <MenuItemLabel>{gt("Open in…")}</MenuItemLabel>
           </MenuSubTrigger>
           <MenuSubPopup>{editorItems}</MenuSubPopup>
         </MenuSub>
@@ -449,7 +451,7 @@ export const OpenInPicker = memo(function OpenInPicker({
               className={isPanel ? THREAD_DETAILS_PANEL_CHEVRON_CLASS : "size-4"}
             />
           </TooltipTrigger>
-          <TooltipPopup side="top">Choose editor</TooltipPopup>
+          <TooltipPopup side="top">{gt("Choose editor")}</TooltipPopup>
         </Tooltip>
         <MenuPopup
           align="end"
